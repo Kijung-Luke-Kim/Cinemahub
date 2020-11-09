@@ -1,0 +1,102 @@
+* {
+    box-sizing: border-box
+}
+form {
+    margin: 0 5%;
+}
+legend {
+    background-color: #403B36;
+    font-size: xx-large;
+    color: #FFEDD8;
+    padding: 5% 10%;
+    border-radius: 100px;
+}
+label {
+    font-size: medium;
+    color: #FFEDD8;
+    display: block;
+}
+fieldset {
+    border: none;
+    text-align: center;
+}
+input {
+    width: 50%;
+    font-size: 16px;
+    margin: 10px;
+}
+select {
+    width: 50%;
+    font-size: 16px;
+    margin: 10px;
+}
+.checkbtn {
+    margin: 10px 25%;
+    text-align: center;
+    background-color: #BFB2A3;
+}
+#check_button {
+    background-color: #80776C;
+    border: none;
+    color: #FFEDD8;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 14px 32px;
+    text-align: center;
+}
+
+
+#reset {
+    text-align: center;
+    vertical-align: middle;
+    background-color: #80776C;
+    border: none;
+    color: #FFEDD8;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 14px 32px;
+}
+
+.cancelbtn {
+    text-align: center;
+    vertical-align: middle;
+    background-color: #80776C;
+    border: none;
+    color: #FFEDD8;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0px;
+}
+
+#check_button:hover, #reset:hover, .cancelbtn:hover {
+    background-color: #403B36;
+}
+
+body {
+    background-color: #80776C;
+    text-align: center;
+}
+
+table {
+    margin: 5% auto;
+    table-layout: fixed;
+    width: 80%;
+    text-align: center;
+}
+
+th {
+    background-color: #403B36;
+    color: honeydew;
+}
+
+td, th {
+    text-align: center;
+    padding: 10px;
+    width: 25%;
+    border-radius: 15px;
+}
+
+td {
+    background-color: #BFB2A3 !important;
+    color: #FFEDD8;
+}

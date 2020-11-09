@@ -1,0 +1,169 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>결제하기</title>
+	<link rel="stylesheet" type="text/css" href="purchase.css"/>
+</head>
+<body id="order">
+	<form>	  
+		<fieldset id="purchaseDetail">
+			<legend>결제 정보</legend>
+			<label for="reserver_name">결제자 성함 : </label>
+			<input type="text" name="reserver_name" size="20" id="reserver_name">
+			<label for="cel_no">휴대폰 번호: </label>
+			<input type="tel" name="cel_no" id="cel_no" placeholder="01*-000*-0000" pattern="01[0-9]{0,1}-[0-9]{3,4}-[0-9]{4}">
+			<label for="mov_totle">영화제목 : </label>
+			<select name="mov_title" id="mov_title" size="1" onchange="loaddetail(this);">
+				<option value="마이스파이" >마이 스파이</option>
+				<option value="패왕별희" >패왕별희</option>
+				<option value="라라랜드" >라라랜드</option>
+			</select>
+			<label for="date">날짜 선택 : </label>
+			<input type="date" name="date" id="res_date">
+			<label for="time">시간 선택 : </label>
+			<input type="time" name="time" id="res_time">
+			<label for="ticket_quantity">매수 수량 : </label>
+			<select name="ticket_quantity" id="ticket_quantity" size="1">
+				<option value=1 >1장</option>
+				<option value=2 >2장</option>
+				<option value=3 >3장</option>
+				<option value=4 >4장</option>
+			</select>
+		</fieldset>
+		<div id="theater"></div>
+		<div class = "purchasebtn" style="clear:both;">
+			<input id="purchase_button" type="button" value="좌석선택" onclick="chooseSeat();">
+			<input id="reset" type="reset" value="취소" onclick="cancelPurchase();">
+		</div>
+	</form>
+	<script type = "text/javascript">
+		var theater = document.getElementById("theater");
+		var submitbtn = document.getElementById("purchase_button");
+		var localStorage = window.localStorage;
+		var movieTitle = document.getElementById("mov_title").value;
+		var movieDate = document.getElementById("res_date").value;
+		var movieTime = document.getElementById("res_time").value;
+		var reserver_name = document.getElementById("reserver_name").value;
+		var cel_no = document.getElementById("cel_no").value;
+		var selectedQuantity = 0;
+		var changedseatlist = [];
+
+		function chooseSeat() {
+			var reserver_name = document.getElementById("reserver_name").value;
+			var cel_no = document.getElementById("cel_no").value;
+			var movieTitle = document.getElementById("mov_title").value;
+			var movieDate = document.getElementById("res_date").value;
+			var movieTime = document.getElementById("res_time").value;
+			console.log(movieDate);
+			if (movieDate=== "" || movieTime=== "" || reserver_name=== "" || cel_no=== "") {
+				alert("누락된 결제정보를 입력하십시오.");
+			}
+			else if (submitbtn.value == "좌석선택" ) {
+				theater.innerHTML = "<p class='screen'>스크린</p>\
+        						<table id='seatplan'></table>";
+				submitbtn.value = "결제하기";
+				
+				var reserver_name = document.getElementById("reserver_name").value;
+				var cel_no = document.getElementById("cel_no").value;
+				var movieTitle = document.getElementById("mov_title").value;
+				var movieDate = document.getElementById("res_date").value;
+				var movieTime = document.getElementById("res_time").value;
+				var seatPlan = document.getElementById("seatplan");
+				
+
+				seatPlan.innerHTML = "";
+				for (var seatrow = 0; seatrow < 8; seatrow++) {
+					var seatsnippet = "";
+					seatsnippet += "<tr><th class='thleft'>\
+											"+ String.fromCharCode(seatrow+65) +"\
+										</th>";
+					for (var seatcol = 0; seatcol < 10; seatcol++) {
+						var seatId = String.fromCharCode(seatrow+65) + (seatcol+1);
+						var reservedSeatId = movieTitle+","+movieDate+","+movieTime+","+seatId;
+						var reserved = "false";
+						for (var i = 0; i <= localStorage.length - 1; i++) {
+							if (localStorage.key(i).includes(reservedSeatId)) {
+								reserved = localStorage.getItem(localStorage.key(i));
+							}
+						}
+						if (reserved == "true") {
+							seatsnippet += "<td class='seat-reserved' id='" + seatId + "' onclick='selectseat(this.id);')>\
+												"+ (seatcol+1) +"\
+											</td>";
+						}
+						else {
+							seatsnippet += "<td class='seat-available' id='" + seatId + "' onclick='selectseat(this.id);'>\
+												"+ (seatcol+1) +"\
+											</td>";
+						}
+					}
+					seatsnippet += "<th class='thright'>\
+										"+ String.fromCharCode(seatrow+65) +"\
+									</th></tr>";
+					seatPlan.innerHTML += seatsnippet;
+				}
+			}
+			else if (submitbtn.value == "결제하기") {
+				var ticket_quantity = document.getElementById("ticket_quantity").value;
+				var r = confirm((ticket_quantity*5000).toLocaleString('en')+"원 결제를 진행하시겠습니까?");
+				if (r == true) {
+					alert("결제가 완료되었습니다.");
+					window.location.href = 'schedule.html';
+				}
+				else {
+					alert("결제가 취소되었습니다.");
+				}
+			}
+		}
+
+		function selectseat(seatId) {
+			var movieTitle = document.getElementById("mov_title").value;
+			var movieDate = document.getElementById("res_date").value;
+			var movieTime = document.getElementById("res_time").value;
+			var ticket_quantity = document.getElementById("ticket_quantity").value;
+			var reserver_name = document.getElementById("reserver_name").value;
+			var cel_no = document.getElementById("cel_no").value;
+            var seat = document.getElementById(seatId);
+            var reservedId = reserver_name+","+cel_no+","+movieTitle+","+movieDate+","+movieTime+","+seatId;
+            // var reserved = localStorage.getItem(reservedId);
+			var reservedSeatId = movieTitle+","+movieDate+","+movieTime+","+seatId;
+			var reserved = "false";
+			for (var i = 0; i <= localStorage.length - 1; i++) {
+				if (localStorage.key(i).includes(reservedSeatId)) {
+					reserved = localStorage.getItem(localStorage.key(i));
+				}
+			}
+            
+			
+            if (reserved == "true") {
+				console.log(seat.className);
+                if (seat.className == "seat-reserved") {
+                    alert("이미 예약된 좌석입니다.");
+				} else {
+                    localStorage.removeItem(reservedId);
+                    seat.style.backgroundColor = "white";
+                    alert(seatId+" 좌석을 취소하셨습니다.");
+					selectedQuantity -= 1;
+					delete changedseatlist[changedseatlist.indexOf(reservedId)];
+                }
+            } else if (selectedQuantity < ticket_quantity){
+				alert(seatId+" 좌석을 선택하셨습니다.");
+				console.log(reservedId);
+                localStorage.setItem(reservedId, "true");
+                seat.style.backgroundColor = "grey";
+				selectedQuantity += 1;
+				changedseatlist.push(reservedId);
+            } else {
+					alert("티켓 매수 수량을 초과한 좌석을 예약할 수 없습니다.");
+			}
+        }
+		function cancelPurchase() {
+			for (var changedseatid of changedseatlist) {
+				localStorage.removeItem(changedseatid);
+			}
+			window.location.href = 'schedule.html';
+		}
+	</script>
+</body>
+</html>

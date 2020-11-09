@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>예매하기</title>
+	<link rel="stylesheet" type="text/css" href="reservecheck.css"/>
+</head>
+<body>
+    <form>
+        <fieldset id="purchaseDetail">
+			<legend>예매 정보</legend>
+			<label for="reserver_name">예매자 성함 : </label>
+			<input type="text" name="reserver_name" size="20" id="reserver_name">
+			<label for="cel_no">휴대폰 번호: </label>
+            <input type="tel" name="cel_no" id="cel_no" placeholder="01*-000*-0000" pattern="01[0-9]{0,1}-[0-9]{3,4}-[0-9]{4}">
+        </fieldset>
+	</form>
+	<div class = "checkbtn" style="clear:both;">
+		<input id="check_button" type="submit" value="상세내역" onclick="showRes();">
+		<input id="reset" type="reset" value="초기화" onclick="location.reload();">
+	</div>
+	<div id = 'reserveDetail'>
+		
+	</div>
+	<script type = "text/javascript">
+		var localStorage = window.localStorage;
+		var reserveDetail = document.getElementById("reserveDetail");
+
+		function showRes() {
+			var reserver_name = document.getElementById("reserver_name").value;
+			var cel_no = document.getElementById("cel_no").value;
+			var reserverId = reserver_name+","+cel_no;
+			if (reserver_name ==="" || cel_no ==="") {
+				alert("성함과 번호를 입력하십시오.");
+			} else {
+				reserveDetail.innerHTML = '<table>\
+				<thead>\
+					<tr>\
+						<th>예매일시</th>\
+						<th>영화제목</th>\
+						<th>좌석번호</th>\
+						<th>취소하기</th>\
+					</tr>\
+				</thead>\
+				<tbody id = "reserveList"></tbody> \
+				</table>';
+				var reserveList = document.getElementById("reserveList");
+				reserveList.innerHTML = "";
+				for (var i = 0; i <= localStorage.length - 1; i++) {
+					if (localStorage.key(i).includes(reserverId)) {
+						var resInfoList = localStorage.key(i).split(",");
+						reserveList.innerHTML += "<tr id='" + localStorage.key(i) + "'><td>"+ resInfoList[3] + "<br>" + resInfoList[4] + "</td><td>" + resInfoList[2]+ "</td><td>" + resInfoList[5] + "</td><td><input id='" + localStorage.key(i) + "' type='button' class='cancelbtn' value='취소' onclick='cancelres(this.id);'></td></tr>";
+					}
+				}
+			}
+			
+		}
+
+		function cancelres(key) {
+			var r = confirm("예매를 취소하시겠습니까?");
+			if (r == true) {
+					alert("예매가 취소되었습니다.");
+					localStorage.removeItem(key);
+					showRes();
+			} else {
+				pass;
+			}
+		}
+	</script>
+</body>

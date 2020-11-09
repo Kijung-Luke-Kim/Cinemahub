@@ -1,0 +1,66 @@
+body {
+    background-color: #80776C;
+}
+img {
+    width: 50px;
+    height: 50px;
+    padding-top: 15px;
+    padding-left: 5px;
+}
+.day ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333333;
+}
+.day li {
+    display:inline-block;
+}
+.day li a {
+    margin: 2%;
+    display: block;
+    color: #FFEDD8;
+    text-align: center;
+    padding: 16px;
+    text-decoration: none;
+}
+  
+.day li a:hover {
+    background-color: #111111;
+    color: red;
+}
+
+.movies ul {
+    list-style-type: none;
+    margin: 20px 10px;
+    padding: 0;
+    overflow: hidden;
+}
+
+.movies li {
+    display: inline-block;
+}
+
+.movies li a {
+    background-color: #403B36;
+    float: left;
+    color: #FFEDD8;
+    padding: 16px;
+    text-decoration: none;
+    border: ivory;
+}
+
+.movies li a:hover {
+    background-color: #111111;
+}
+
+.title {
+    width: 100%;
+    color: #FFEDD8;
+    text-decoration: none;
+}
+
+.title:hover {
+    color: #333333;
+}
